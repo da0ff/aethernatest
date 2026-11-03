@@ -221,17 +221,216 @@ body { background-color: #05030C;
     box-shadow: inset 0 0 0 2px rgba(90,74,138,.28), 0 10px 28px rgba(0,0,0,.4); }
 .gold-btn, .btn-normal { border-radius: 4px; }
 
-/* ===== Tarjetas con emblema SIN caja: emblema, nombre y texto siempre visibles; al pasar el ratón brillan y se elevan ===== */
-.frame-panel.emblem-card, .frame-panel.emblem-card:hover, .frame-panel.emblem-card:focus-visible,
-.frame-panel.emblem-card.emblem-reveal, .frame-panel.emblem-card.emblem-reveal:hover, .frame-panel.emblem-card.emblem-reveal:focus-visible,
-.frame-panel.emblem-card.emblem-peek, .frame-panel.emblem-card.emblem-peek:hover, .frame-panel.emblem-card.emblem-peek:focus-visible {
-    background: transparent; border-color: transparent; box-shadow: none; transform: none; outline: none; }
-.frame-panel.emblem-card::before, .frame-panel.emblem-card::after { display: none; }
+/* ===== Tarjetas con emblema: panel siempre visible y el emblema DENTRO (ya no asoma por encima) ===== */
+.frame-panel.emblem-card, .frame-panel.emblem-card.emblem-reveal, .frame-panel.emblem-card.emblem-peek {
+    padding-top: 222px; background: rgba(14,11,38,.82); border-color: rgba(217,180,106,.4);
+    box-shadow: inset 0 0 0 2px rgba(90,74,138,.28), 0 10px 26px rgba(0,0,0,.45); }
+.frame-panel.emblem-card.no-emblem { padding-top: 1.25rem; }
+.frame-panel.emblem-card > .emblem-stage { top: 16px; height: 200px; }
+.emblem-stage .emblem { width: 190px; height: 190px; margin: -95px 0 0 -95px; }
+.emblem-stage::after { display: none; }
+.frame-panel.emblem-card:hover, .frame-panel.emblem-card:focus-visible,
+.frame-panel.emblem-card.emblem-reveal:hover, .frame-panel.emblem-card.emblem-reveal:focus-visible,
+.frame-panel.emblem-card.emblem-peek:hover, .frame-panel.emblem-card.emblem-peek:focus-visible {
+    background: rgba(21,16,52,.92); border-color: rgba(240,215,158,.85); outline: none; transform: translateY(-5px);
+    box-shadow: inset 0 0 0 2px rgba(217,180,106,.3), 0 16px 34px rgba(0,0,0,.55), 0 0 26px rgba(157,108,240,.35); }
 .frame-panel.emblem-card > :not(.emblem-stage), .frame-panel.emblem-card.emblem-reveal > :not(.emblem-stage) { opacity: 1; transform: none; }
 .emblem-peek .peek-more { opacity: 1; transform: none; }
-.frame-panel.emblem-card h3, .frame-panel.emblem-card p, .frame-panel.emblem-card span { text-shadow: 0 2px 10px rgba(0,0,0,.8); }
-.frame-panel.emblem-card .font-cinzel:last-child { transition: color .3s, text-shadow .3s, transform .3s; }
-.frame-panel.emblem-card:hover .font-cinzel:last-child, .frame-panel.emblem-card:focus-visible .font-cinzel:last-child { color: #FFF2CF; text-shadow: 0 0 14px rgba(217,180,106,.8); transform: translateY(-2px); }
-.frame-panel.emblem-card:focus-visible .emblem { outline: 2px solid #F0D79E; outline-offset: 6px; border-radius: 12px; }
-@media (prefers-reduced-motion: reduce) { .frame-panel.emblem-card .font-cinzel:last-child { transition: none; } }
+/* menos aire entre filas: antes sobraba espacio para el emblema que asomaba */
+*:has(> .emblem-card) { row-gap: 1.75rem !important; padding-top: 0 !important; }
+@media (hover: none) { .frame-panel.emblem-card:hover { transform: none; } }
 
+/* ===== Logo dentro del hexágono de fondo (marca de agua en todas las páginas) ===== */
+body::after { content: ""; position: fixed; top: 50%; right: -100px; transform: translateY(-50%); width: 600px; height: 600px; z-index: 0; pointer-events: none;
+    background: url("fotos/Logo.png") center / 44% no-repeat; opacity: .07; }
+@media (max-width: 1023px) { body::before, body::after { display: none; } }
+
+/* =====================================================================
+   ESTILO GRIMORIO (html[data-theme="grimorio"]): cuero oscuro, ámbar y oro viejo, sigilo rúnico y brasas.
+   El estilo por defecto («nebulosa») no se toca: todo esto solo actúa con el atributo data-theme="grimorio".
+   ===================================================================== */
+#grim-layer { display: none; position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+html[data-theme="grimorio"] #grim-layer { display: block; }
+html[data-theme="grimorio"] #cosmos-bg, html[data-theme="grimorio"] #cosmos-stars { display: none; }
+html[data-theme="grimorio"] body { background-color: #080503; background-image: linear-gradient(#0A0604, #120A06); }
+html[data-theme="grimorio"] body::before, html[data-theme="grimorio"] body::after { display: none; }
+html[data-theme="grimorio"] ::-webkit-scrollbar-track { background: #0B0603; }
+html[data-theme="grimorio"] ::-webkit-scrollbar-thumb { background: #6E4F2A; }
+.gl-smoke { position: absolute; inset: -12%; will-change: transform; background:
+    radial-gradient(ellipse 34% 22% at 18% 24%, rgba(224,120,40,.20), transparent 70%),
+    radial-gradient(ellipse 26% 16% at 30% 34%, rgba(255,160,70,.11), transparent 70%),
+    radial-gradient(ellipse 40% 24% at 78% 60%, rgba(214,110,34,.19), transparent 72%),
+    radial-gradient(ellipse 24% 15% at 66% 70%, rgba(255,150,60,.10), transparent 70%),
+    radial-gradient(ellipse 32% 18% at 46% 92%, rgba(224,125,45,.17), transparent 72%);
+    animation: gl-drift 46s ease-in-out infinite alternate; }
+.gl-smoke2 { background:
+    radial-gradient(ellipse 30% 18% at 86% 14%, rgba(224,120,40,.17), transparent 72%),
+    radial-gradient(ellipse 22% 13% at 74% 22%, rgba(255,160,70,.09), transparent 70%),
+    radial-gradient(ellipse 36% 20% at 8% 70%, rgba(214,105,32,.17), transparent 72%),
+    radial-gradient(ellipse 26% 14% at 50% 52%, rgba(200,95,30,.08), transparent 72%);
+    animation-duration: 62s; animation-direction: alternate-reverse; }
+@keyframes gl-drift { from { transform: translate3d(-2%, 1%, 0) scale(1); } to { transform: translate3d(2%, -1%, 0) scale(1.06); } }
+.gs-ring, .gs-inner { transform-box: view-box; transform-origin: 400px 400px; }
+@keyframes gs-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .gl-smoke, .hero-sigil { animation: none !important; } }
+
+/* paneles con doble filo dorado */
+html[data-theme="grimorio"] .frame-panel { background-color: rgba(18,11,6,.88); border-color: rgba(201,150,70,.55);
+    box-shadow: inset 0 0 0 2px rgba(0,0,0,.55), inset 0 0 0 3px rgba(201,150,70,.25), 0 10px 26px rgba(0,0,0,.5); }
+html[data-theme="grimorio"] .frame-panel.emblem-card, html[data-theme="grimorio"] .frame-panel.emblem-card.emblem-reveal, html[data-theme="grimorio"] .frame-panel.emblem-card.emblem-peek {
+    background: rgba(18,11,6,.84); border-color: rgba(201,150,70,.5); box-shadow: inset 0 0 0 2px rgba(0,0,0,.55), inset 0 0 0 3px rgba(201,150,70,.22), 0 10px 26px rgba(0,0,0,.5); }
+html[data-theme="grimorio"] .frame-panel:hover, html[data-theme="grimorio"] .gold-card:hover,
+html[data-theme="grimorio"] .frame-panel.emblem-card:hover, html[data-theme="grimorio"] .frame-panel.emblem-card:focus-visible,
+html[data-theme="grimorio"] .frame-panel.emblem-card.emblem-reveal:hover, html[data-theme="grimorio"] .frame-panel.emblem-card.emblem-peek:hover {
+    background: rgba(27,17,9,.94); border-color: rgba(240,200,120,.9);
+    box-shadow: inset 0 0 0 2px rgba(0,0,0,.5), inset 0 0 0 3px rgba(240,200,120,.35), 0 16px 34px rgba(0,0,0,.6), 0 0 26px rgba(224,144,47,.28); }
+html[data-theme="grimorio"] .gold-card::before { background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(224,144,47,.26), rgba(217,180,106,.10) 45%, transparent 70%); }
+html[data-theme="grimorio"] .emblem-stage::before { background: radial-gradient(closest-side, rgba(217,160,70,.38), rgba(150,70,20,.24) 58%, transparent 80%); }
+
+/* botones */
+html[data-theme="grimorio"] .btn-normal { background: linear-gradient(135deg, #2A1A0C 0%, #120A05 100%); border-color: #8A6A35; box-shadow: inset 0 0 0 1px rgba(0,0,0,.6); }
+html[data-theme="grimorio"] .btn-normal:hover { border-color: #F0D79E; box-shadow: 0 0 15px rgba(224,144,47,.3); }
+html[data-theme="grimorio"] .btn-primary-aetherna { background: linear-gradient(135deg, #7A4214 0%, #2E1808 100%); border-color: #E8C77D; box-shadow: inset 0 0 0 1px #E8C77D, 0 0 15px rgba(224,144,47,.3); }
+
+/* clases de Tailwind con colores morados -> equivalentes cálidos */
+html[data-theme="grimorio"] .bg-aetherna-bgSec { background-color: #120A05; }
+html[data-theme="grimorio"] .bg-aetherna-panel, html[data-theme="grimorio"] .hover\:bg-aetherna-panel:hover { background-color: #1B1109; }
+html[data-theme="grimorio"] .bg-aetherna-panel\/40 { background-color: rgba(27,17,9,.4); }
+html[data-theme="grimorio"] .bg-aetherna-field { background-color: #0E0804; }
+html[data-theme="grimorio"] .bg-aetherna-field\/60 { background-color: rgba(14,8,4,.6); }
+html[data-theme="grimorio"] .bg-\[\#05030C\]\/95 { background-color: rgba(7,4,2,.95); }
+html[data-theme="grimorio"] .bg-\[\#07051A\]\/90, html[data-theme="grimorio"] .bg-aetherna-bgMain\/90 { background-color: rgba(11,6,3,.9); }
+html[data-theme="grimorio"] .bg-\[\#0B0824\]\/94 { background-color: rgba(14,8,4,.94); }
+html[data-theme="grimorio"] .bg-aetherna-ember { background-color: #E0902F; }
+html[data-theme="grimorio"] .text-aetherna-ember { color: #E0902F; }
+html[data-theme="grimorio"] .border-aetherna-bronzeDark { border-color: #6E4F2A; }
+html[data-theme="grimorio"] .border-aetherna-bronzeDark\/50 { border-color: rgba(110,79,42,.5); }
+html[data-theme="grimorio"] .border-aetherna-blood\/40 { border-color: rgba(107,36,24,.4); }
+html[data-theme="grimorio"] .border-aetherna-cosmicViolet\/40 { border-color: rgba(217,164,65,.4); }
+html[data-theme="grimorio"] .border-aetherna-ember\/40 { border-color: rgba(224,144,47,.4); }
+html[data-theme="grimorio"] .from-aetherna-ember { --tw-gradient-from: #E0902F var(--tw-gradient-from-position); --tw-gradient-to: rgba(224,144,47,0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+html[data-theme="grimorio"] .from-aetherna-blood { --tw-gradient-from: #6B2418 var(--tw-gradient-from-position); --tw-gradient-to: rgba(107,36,24,0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+html[data-theme="grimorio"] .from-aetherna-bronzeDark { --tw-gradient-from: #6E4F2A var(--tw-gradient-from-position); --tw-gradient-to: rgba(110,79,42,0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+html[data-theme="grimorio"] .from-aetherna-bgMain\/90 { --tw-gradient-from: rgba(11,6,3,.9) var(--tw-gradient-from-position); --tw-gradient-to: rgba(11,6,3,0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+html[data-theme="grimorio"] .to-aetherna-blood { --tw-gradient-to: #6B2418 var(--tw-gradient-to-position); }
+html[data-theme="grimorio"] .to-aetherna-field { --tw-gradient-to: #0E0804 var(--tw-gradient-to-position); }
+html[data-theme="grimorio"] .shadow-\[0_0_15px_rgba\(157\2c 108\2c 240\2c 0\.6\)\] { box-shadow: 0 0 15px rgba(224,144,47,.6); }
+
+/* reproductor, pantalla de entrada y buscador */
+html[data-theme="grimorio"] #music-player-capsule { background-color: rgba(14,8,4,.94); }
+html[data-theme="grimorio"] #music-player-capsule .mp-disc { background: linear-gradient(135deg, #5A3416, #120A05); }
+html[data-theme="grimorio"] #music-player-capsule.mp-collapsed .mp-disc { box-shadow: 0 0 18px rgba(224,144,47,.4), 0 6px 18px rgba(0,0,0,.6); }
+html[data-theme="grimorio"] .gate-logo { filter: drop-shadow(0 0 18px rgba(224,144,47,.55)); }
+html[data-theme="grimorio"] #entry-gate { background-color: rgba(7,4,2,.96); }
+
+/* selector de estilo de la pantalla de entrada */
+.gate-theme { display: flex; align-items: center; justify-content: center; gap: .6rem; margin-bottom: 1.6rem; font: 600 .62rem Cinzel, serif; letter-spacing: .25em; text-transform: uppercase; color: #9C8865; }
+.gate-theme button { padding: .5rem 1rem; font: 600 .68rem Cinzel, serif; letter-spacing: .2em; text-transform: uppercase; color: #C8B48C; border: 1px solid rgba(217,180,106,.35); background: rgba(11,8,36,.6); transition: color .2s, border-color .2s, box-shadow .2s, background .2s; }
+.gate-theme button:hover { color: #FFF2CF; border-color: rgba(217,180,106,.8); }
+.gate-theme button[aria-pressed="true"] { color: #FFF2CF; border-color: #F0D79E; box-shadow: 0 0 12px rgba(217,180,106,.35), inset 0 0 0 1px rgba(240,215,158,.4); }
+html[data-theme="grimorio"] .gate-theme button { background: rgba(18,10,5,.7); }
+
+/* botón de estilo: abajo a la izquierda en escritorio; en móvil, dentro del menú */
+#theme-pill { display: none; }
+.theme-toggle-m { display: block; width: 100%; margin-top: .5rem; padding: .6rem 0; font: 600 .75rem Cinzel, serif; letter-spacing: .18em; text-transform: uppercase; color: #C8B48C; border-top: 1px solid rgba(217,180,106,.2); }
+.theme-toggle-m b { color: #F0D79E; }
+@media (min-width: 1024px) {
+    #theme-pill { display: flex; align-items: center; gap: .55rem; position: fixed; left: 1rem; bottom: 1rem; z-index: 45; padding: .55rem .9rem; cursor: pointer;
+        font: 600 .68rem Cinzel, serif; letter-spacing: .2em; text-transform: uppercase; color: #8F8061;
+        background: rgba(11,8,36,.9); border: 1px solid rgba(217,180,106,.5); box-shadow: inset 0 0 0 2px rgba(90,74,138,.3), 0 8px 22px rgba(0,0,0,.5);
+        transition: border-color .2s, box-shadow .2s; }
+    #theme-pill:hover { border-color: #F0D79E; box-shadow: inset 0 0 0 2px rgba(90,74,138,.3), 0 0 16px rgba(217,180,106,.3); }
+    #theme-pill .tp-k { color: #D9B46A; }
+    #theme-pill i { font-style: normal; opacity: .5; }
+    html[data-theme="nebulosa"] #theme-pill [data-opt="nebulosa"], html[data-theme="grimorio"] #theme-pill [data-opt="grimorio"] { color: #FFF2CF; text-shadow: 0 0 10px rgba(240,215,158,.6); }
+    html[data-theme="grimorio"] #theme-pill { background: rgba(14,8,4,.92); box-shadow: inset 0 0 0 2px rgba(0,0,0,.55), inset 0 0 0 3px rgba(201,150,70,.25), 0 8px 22px rgba(0,0,0,.55); }
+    /* la barra de habilidades */
+    html[data-theme="grimorio"] #dock { background: linear-gradient(180deg, rgba(8,5,3,.95) 55%, rgba(8,5,3,0)); }
+    html[data-theme="grimorio"] .dk-bar { background: rgba(10,6,3,.92); border-color: rgba(201,150,70,.6); box-shadow: inset 0 0 0 2px rgba(0,0,0,.55), inset 0 0 0 3px rgba(201,150,70,.2), 0 10px 30px rgba(0,0,0,.6); }
+    html[data-theme="grimorio"] .dk-slot { background: linear-gradient(160deg, #241608, #0C0704); border-color: rgba(201,150,70,.5); }
+    html[data-theme="grimorio"] .dk-slot.on { background: linear-gradient(160deg, #3A2410, #0C0704); border-color: #F0D79E; box-shadow: 0 0 14px rgba(224,144,47,.45); }
+    html[data-theme="grimorio"] .dk-slot:hover, html[data-theme="grimorio"] .dk-slot:focus-visible { border-color: #FFF2CF; box-shadow: 0 0 18px rgba(224,144,47,.55), inset 0 0 0 1px rgba(240,215,158,.45); }
+}
+
+/* Grimorio: ajustes de componentes propios de cada página (chips, etiquetas, brillos al pasar el ratón) */
+html[data-theme="grimorio"] .era-badge { color: #F0B35A; border-color: rgba(224,144,47,.7); background: rgba(224,144,47,.10); }
+html[data-theme="grimorio"] .era-chip, html[data-theme="grimorio"] .mn-chip:not(.on), html[data-theme="grimorio"] .mn-tag, html[data-theme="grimorio"] .mn-btn,
+html[data-theme="grimorio"] .mn-stats div, html[data-theme="grimorio"] .mn-tr, html[data-theme="grimorio"] .mn-t, html[data-theme="grimorio"] .mn-final,
+html[data-theme="grimorio"] .mn-rollout, html[data-theme="grimorio"] .mn-sort select, html[data-theme="grimorio"] .mn-roll input { background-color: #0E0804; }
+html[data-theme="grimorio"] .mn-tr.on { background: linear-gradient(135deg, #3A2410, #120A05); box-shadow: 0 0 18px rgba(224,144,47,.35); }
+html[data-theme="grimorio"] .nw-filter:not(.is-on) { background: rgba(14,8,4,.6); }
+html[data-theme="grimorio"] .nw-filter:hover, html[data-theme="grimorio"] .nw-filter.is-on { box-shadow: 0 0 14px rgba(224,144,47,.35); }
+html[data-theme="grimorio"] .nw-video { box-shadow: 0 0 30px rgba(224,144,47,.2); }
+html[data-theme="grimorio"] .nw-media { background: radial-gradient(120% 120% at 30% 20%, #6B3A14 0%, #1B1109 60%, #0E0804 100%); }
+html[data-theme="grimorio"] .nw-media svg, html[data-theme="grimorio"] .home-news-media svg { filter: drop-shadow(0 0 10px rgba(224,144,47,.5)); }
+html[data-theme="grimorio"] .lore-hover:hover, html[data-theme="grimorio"] .rz-hover:hover { box-shadow: 0 0 34px rgba(224,144,47,.2), inset 0 0 0 3px rgba(217,180,106,.30); }
+html[data-theme="grimorio"] .lore-lift:hover, html[data-theme="grimorio"] .rz-lift:hover, html[data-theme="grimorio"] .mn-card:hover, html[data-theme="grimorio"] .nw-item:hover {
+    box-shadow: 0 16px 34px rgba(0,0,0,.6), 0 0 26px rgba(224,144,47,.28), inset 0 0 0 3px rgba(217,180,106,.35); }
+html[data-theme="grimorio"] .lore-hover::before, html[data-theme="grimorio"] .lore-lift::before, html[data-theme="grimorio"] .rz-hover::before, html[data-theme="grimorio"] .rz-lift::before,
+html[data-theme="grimorio"] .mn-card::before, html[data-theme="grimorio"] .nw-item::before { background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(224,144,47,.24), rgba(217,180,106,.10) 45%, transparent 70%); }
+
+/* ===== Grimorio · Lore: páginas de códice ===== */
+html[data-theme="grimorio"] #page-root .lore-hover { border-color: rgba(176,132,62,.55); box-shadow: inset 0 0 0 4px #0F0904, inset 0 0 0 5px rgba(176,132,62,.35), 0 18px 40px rgba(0,0,0,.5);
+    background-image: radial-gradient(ellipse 70% 50% at 100% 0%, rgba(224,120,40,.07), transparent 70%), radial-gradient(ellipse 60% 45% at 0% 100%, rgba(224,120,40,.05), transparent 70%); }
+html[data-theme="grimorio"] #page-root .lore-hover::after { content: ""; position: absolute; inset: 14px; z-index: 0; pointer-events: none; --c: rgba(224,170,90,.7);
+    background:
+      linear-gradient(var(--c),var(--c)) left top / 22px 1.5px no-repeat, linear-gradient(var(--c),var(--c)) left top / 1.5px 22px no-repeat,
+      linear-gradient(var(--c),var(--c)) right top / 22px 1.5px no-repeat, linear-gradient(var(--c),var(--c)) right top / 1.5px 22px no-repeat,
+      linear-gradient(var(--c),var(--c)) left bottom / 22px 1.5px no-repeat, linear-gradient(var(--c),var(--c)) left bottom / 1.5px 22px no-repeat,
+      linear-gradient(var(--c),var(--c)) right bottom / 22px 1.5px no-repeat, linear-gradient(var(--c),var(--c)) right bottom / 1.5px 22px no-repeat; }
+html[data-theme="grimorio"] #page-root .lore-hover > * { position: relative; z-index: 1; }
+html[data-theme="grimorio"] #page-root .lore-hover h2 { color: #F3D9A0; letter-spacing: .06em; text-shadow: 0 0 18px rgba(224,144,47,.3); }
+html[data-theme="grimorio"] #page-root .lore-hover .font-cinzel.px-3 { background: linear-gradient(180deg, #3A2410, #1B1109); border-color: rgba(224,170,90,.6); color: #F0C26E; letter-spacing: .14em; }
+html[data-theme="grimorio"] #page-root .lore-hover > .rv:first-child { border-bottom: 0; padding-bottom: 1.4rem; position: relative; }
+html[data-theme="grimorio"] #page-root .lore-hover > .rv:first-child::after { content: "\25C6"; position: absolute; left: 0; right: 0; bottom: -.55rem; text-align: center; font-size: 10px; line-height: 1; color: #E0902F;
+    background: linear-gradient(90deg, transparent, rgba(224,170,90,.55) 12%, transparent 46%, transparent 54%, rgba(224,170,90,.55) 88%, transparent) center .5rem / 100% 1px no-repeat; }
+/* capital ornamental en el primer párrafo de cada capítulo */
+html[data-theme="grimorio"] #page-root .lore-hover .rv.font-garamond > p:first-child::first-letter { font-family: 'Cinzel Decorative', serif; font-weight: 900; float: left; font-size: 3.5em; line-height: .82; padding: .06em .12em 0 0;
+    background: linear-gradient(180deg, #FFE7B0, #D58A2B); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+html[data-theme="grimorio"] #page-root .lore-hover p { color: #E3D2B0; }
+/* ilustraciones como láminas enmarcadas */
+html[data-theme="grimorio"] #page-root .lore-lift { border-color: rgba(176,132,62,.7); box-shadow: 0 0 0 4px #0F0904, 0 0 0 5px rgba(176,132,62,.5), 0 14px 30px rgba(0,0,0,.55); background: #0A0603; }
+html[data-theme="grimorio"] #page-root .lore-lift img { filter: sepia(.38) saturate(1.15) contrast(1.04); }
+html[data-theme="grimorio"] #page-root .lore-lift .from-aetherna-bgMain\/90 { --tw-gradient-from: rgba(10,6,3,.92); }
+/* cabecera de la página */
+html[data-theme="grimorio"] #page-root main > .reveal:first-child h1 { background: linear-gradient(180deg, #FFEFC4, #D9923A 80%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; text-shadow: none; filter: drop-shadow(0 4px 18px rgba(0,0,0,.8)); }
+html[data-theme="grimorio"] #page-root main > .reveal:first-child .w-24 { width: 9rem; height: 1px; background: linear-gradient(90deg, transparent, #E0902F, transparent); }
+html[data-theme="grimorio"] #page-root .separator-diamond { color: #E0902F; }
+html[data-theme="grimorio"] #page-root .separator-line::before, html[data-theme="grimorio"] #page-root .separator-line::after { background: linear-gradient(90deg, transparent, rgba(224,144,47,.5), transparent); }
+
+/* ===== Nebulosa · Lore: códice cósmico ===== */
+html:not([data-theme="grimorio"]) #page-root .lore-hover { background-image:
+    radial-gradient(1.2px 1.2px at 12% 18%, rgba(255,242,207,.55), transparent 60%), radial-gradient(1px 1px at 86% 12%, rgba(196,160,255,.6), transparent 60%),
+    radial-gradient(1.4px 1.4px at 72% 82%, rgba(255,242,207,.45), transparent 60%), radial-gradient(1px 1px at 28% 90%, rgba(196,160,255,.5), transparent 60%),
+    radial-gradient(ellipse 80% 60% at 100% 0%, rgba(120,70,225,.16), transparent 70%), radial-gradient(ellipse 70% 50% at 0% 100%, rgba(60,40,150,.18), transparent 70%); }
+html:not([data-theme="grimorio"]) #page-root .lore-hover h2 { text-shadow: 0 0 18px rgba(157,108,240,.35); letter-spacing: .05em; }
+html:not([data-theme="grimorio"]) #page-root .lore-hover > .rv:first-child { border-bottom: 0; padding-bottom: 1.5rem; position: relative; }
+html:not([data-theme="grimorio"]) #page-root .lore-hover > .rv:first-child::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 18px; pointer-events: none;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 18'%3E%3Cpath d='M0 9H78L96 4L120 13L144 5L162 9H240' fill='none' stroke='%23C4A0FF' stroke-opacity='.55' stroke-width='.8'/%3E%3Cg fill='%23FFF2CF'%3E%3Ccircle cx='96' cy='4' r='1.8'/%3E%3Ccircle cx='120' cy='13' r='2.4'/%3E%3Ccircle cx='144' cy='5' r='1.6'/%3E%3Ccircle cx='78' cy='9' r='1.2'/%3E%3Ccircle cx='162' cy='9' r='1.2'/%3E%3C/g%3E%3C/svg%3E") center / min(100%, 480px) 18px no-repeat; }
+/* letra capital */
+html:not([data-theme="grimorio"]) #page-root .lore-hover .rv.font-garamond > p:first-child::first-letter { font-family: 'Cinzel Decorative', serif; font-weight: 900; float: left; font-size: 3.5em; line-height: .82; padding: .06em .12em 0 0;
+    background: linear-gradient(180deg, #FFF2CF, #A57BFF); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+/* láminas con resplandor violeta */
+html:not([data-theme="grimorio"]) #page-root .lore-lift { border-color: rgba(196,160,255,.45); box-shadow: 0 0 0 3px rgba(14,11,38,.9), 0 0 24px rgba(120,70,225,.35), 0 14px 30px rgba(0,0,0,.5); }
+html:not([data-theme="grimorio"]) #page-root .lore-lift img { filter: saturate(1.05) contrast(1.04); }
+/* cabecera */
+html:not([data-theme="grimorio"]) #page-root main > .reveal:first-child h1 { background: linear-gradient(180deg, #FFF2CF 20%, #B898FF); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; filter: drop-shadow(0 4px 18px rgba(0,0,0,.7)); }
+html:not([data-theme="grimorio"]) #page-root main > .reveal:first-child .w-24 { width: 11rem; position: relative; background: linear-gradient(90deg, transparent, #C4A0FF, transparent); overflow: visible; }
+html:not([data-theme="grimorio"]) #page-root main > .reveal:first-child .w-24::before { content: "\2726"; position: absolute; left: 50%; top: 50%; translate: -50% -50%; font-size: 13px; line-height: 1; color: #FFF2CF; padding: 0 .5rem; background: #0B0820; text-shadow: 0 0 10px rgba(196,160,255,.9); }
+/* hilo estelar entre capítulos (solo escritorio) */
+@media (min-width: 1024px) {
+  html:not([data-theme="grimorio"]) #page-root main > .space-y-16 { position: relative; }
+  html:not([data-theme="grimorio"]) #page-root main > .space-y-16::before { content: ""; position: absolute; left: 50%; top: -2rem; bottom: -2rem; width: 1px; z-index: 0;
+    background: linear-gradient(180deg, transparent, rgba(196,160,255,.55) 8%, rgba(196,160,255,.55) 92%, transparent); }
+  html:not([data-theme="grimorio"]) #page-root .lore-hover::after { content: ""; position: absolute; left: 50%; top: -2.5rem; width: 9px; height: 9px; translate: -50% -50%; border-radius: 50%; pointer-events: none; z-index: 2;
+    background: #FFF2CF; box-shadow: 0 0 0 3px rgba(157,108,240,.35), 0 0 14px 3px rgba(196,160,255,.8); }
+}
+/* barra de progreso de lectura (CSS puro, solo navegadores que lo soporten) */
+@supports (animation-timeline: scroll()) {
+  @media (min-width: 1024px) {
+    html:not([data-theme="grimorio"]) #page-root main:has(.lore-hover)::before { content: ""; position: fixed; left: 14px; top: 110px; bottom: 90px; width: 3px; z-index: 5; border-radius: 3px; pointer-events: none;
+      background: linear-gradient(180deg, #FFF2CF, #9D6CF0); box-shadow: 0 0 10px rgba(157,108,240,.7); transform-origin: top; transform: scaleY(0); animation: lore-prog linear both; animation-timeline: scroll(root); }
+    html:not([data-theme="grimorio"]) #page-root main:has(.lore-hover)::after { content: ""; position: fixed; left: 14px; top: 110px; bottom: 90px; width: 3px; z-index: 4; border-radius: 3px; pointer-events: none; background: rgba(157,108,240,.18); }
+  }
+}
+@keyframes lore-prog { to { transform: scaleY(1); } }
